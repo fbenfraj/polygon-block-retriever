@@ -3,12 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { Web3Module } from './web3/web3.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MikroOrmModule.forRoot({
       type: 'postgresql',
       host: process.env.POSTGRES_HOST,
@@ -20,6 +22,7 @@ dotenv.config();
       entitiesTs: ['./src/entities/*.ts'],
       autoLoadEntities: true,
     }),
+    Web3Module,
   ],
   controllers: [AppController],
   providers: [AppService],
