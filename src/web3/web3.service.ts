@@ -20,9 +20,6 @@ export class Web3Service {
       .on('open', () => {
         this.subscribeToNewHeads();
       })
-      .on('message', (data) => {
-        console.log('data: ', data);
-      })
       .on('error', (error) => {
         console.log('error: ', error);
       })
@@ -40,5 +37,9 @@ export class Web3Service {
     };
 
     this.webSocket.send(JSON.stringify(payload));
+  }
+
+  public getWebSocket(): WebSocket {
+    return this.webSocket;
   }
 }

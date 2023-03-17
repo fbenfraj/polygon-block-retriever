@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Web3Module } from './web3/web3.module';
 import { ConfigModule } from '@nestjs/config';
+import { AppService } from './app.service';
+import { Web3Module } from './web3/web3.module';
+import { Web3Service } from './web3/web3.service';
+import { DbModule } from './db/db.module';
+import { DbService } from './db/db.service';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 @Module({
   imports: [
@@ -23,8 +24,8 @@ import { ConfigModule } from '@nestjs/config';
       autoLoadEntities: true,
     }),
     Web3Module,
+    DbModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, DbService, Web3Service],
 })
 export class AppModule {}
