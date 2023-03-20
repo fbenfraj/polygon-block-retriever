@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { CacheModule as RedisModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { DbModule } from './db/db.module';
@@ -10,13 +10,15 @@ import * as redisStore from 'cache-manager-redis-store';
 import { WebsocketService } from './websocket/websocket.service';
 import { Web3Module } from './web3/web3.module';
 import { Web3Service } from './web3/web3.service';
+import { CacheModule } from './cache/cache.module';
+import { CacheService } from './cache/cache.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.register<RedisClientOptions>({
+    RedisModule.register<RedisClientOptions>({
       isGlobal: true,
       // ttl in milliseconds
       ttl: 300000,
@@ -36,7 +38,14 @@ import { Web3Service } from './web3/web3.service';
     DbModule,
     WebsocketModule,
     Web3Module,
+    CacheModule,
   ],
-  providers: [AppService, DbService, WebsocketService, Web3Service],
+  providers: [
+    AppService,
+    DbService,
+    WebsocketService,
+    Web3Service,
+    CacheService,
+  ],
 })
 export class AppModule {}

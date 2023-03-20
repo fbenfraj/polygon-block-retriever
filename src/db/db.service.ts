@@ -18,13 +18,23 @@ export class DbService {
     this.emFork = this.em.fork();
   }
 
+  /**
+   * Creates a new Block entity with the provided data and persists it to the database.
+   *
+   * @param hash - The hash of the block.
+   * @param number - The block number in hex format.
+   * @param parentHash - The hash of the parent block.
+   * @param timestamp - The timestamp of the block in hex format.
+   * @param forked - A boolean indicating whether the block is part of a fork.
+   * @returns {Promise<Block>} The newly created and persisted Block entity.
+   */
   async createBlock(
     hash: string,
     number: string,
     parentHash: string,
     timestamp: Date,
     forked: boolean,
-  ) {
+  ): Promise<Block> {
     const unixTimestamp = parseInt(timestamp.toString(), 16);
     const timestampDate = new Date(unixTimestamp * 1000);
 
@@ -46,6 +56,12 @@ export class DbService {
     return block;
   }
 
+  /**
+   * Determines if a block with the given hash is a fork in the database.
+   *
+   * @param hash - The hash of the block to check.
+   * @returns {Promise<boolean>} A Promise resolving to a boolean indicating whether the block is a fork.
+   */
   async isAFork(hash: string): Promise<boolean> {
     const block = await this.emFork.findOne(Block, { hash });
 
