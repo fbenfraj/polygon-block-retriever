@@ -1,22 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ethers } from 'ethers';
 import { WebSocket } from 'ws';
 
 @Injectable()
-export class Web3Service {
-  private readonly alchemyApiKey: string;
+export class WebsocketService {
   public readonly webSocket: WebSocket;
-  public provider: ethers.JsonRpcProvider;
-  private readonly logger = new Logger(Web3Service.name);
+  private readonly logger = new Logger(WebsocketService.name);
 
   constructor(private configService: ConfigService) {
-    this.alchemyApiKey = this.configService.get<string>('ALCHEMY_API_KEY');
-    this.provider = new ethers.JsonRpcProvider(
-      `https://polygon-mainnet.g.alchemy.com/v2/${this.alchemyApiKey}`,
-    );
+    const alchemyApiKey = this.configService.get<string>('ALCHEMY_API_KEY');
+    
     this.webSocket = new WebSocket(
-      `wss://polygon-mainnet.g.alchemy.com/v2/${this.alchemyApiKey}`,
+      `wss://polygon-mainnet.g.alchemy.com/v2/${alchemyApiKey}`,
     )
       .on('open', () => {
         this.subscribeToNewHeads();

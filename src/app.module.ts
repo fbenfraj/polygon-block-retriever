@@ -1,13 +1,13 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
-import { Web3Module } from './web3/web3.module';
-import { Web3Service } from './web3/web3.service';
 import { DbModule } from './db/db.module';
 import { DbService } from './db/db.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { RedisClientOptions } from 'redis';
+import { WebsocketModule } from './websocket/websocket.module';
 import * as redisStore from 'cache-manager-redis-store';
+import { WebsocketService } from './websocket/websocket.service';
 
 @Module({
   imports: [
@@ -31,9 +31,9 @@ import * as redisStore from 'cache-manager-redis-store';
       entitiesTs: ['./src/entities/*.ts'],
       autoLoadEntities: true,
     }),
-    Web3Module,
     DbModule,
+    WebsocketModule,
   ],
-  providers: [AppService, DbService, Web3Service],
+  providers: [AppService, DbService, WebsocketService],
 })
 export class AppModule {}

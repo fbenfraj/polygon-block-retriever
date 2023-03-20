@@ -1,9 +1,9 @@
 import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { DbService } from './db/db.service';
-import { Web3Service } from './web3/web3.service';
 import { WebSocket } from 'ws';
 import { Block } from './entities/block.entity';
 import { Cache } from 'cache-manager';
+import { WebsocketService } from './websocket/websocket.service';
 
 @Injectable()
 export class AppService {
@@ -11,11 +11,11 @@ export class AppService {
   private readonly logger = new Logger(AppService.name);
 
   constructor(
-    private readonly web3Service: Web3Service,
+    private readonly webSocketService: WebsocketService,
     private readonly dbService: DbService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {
-    this.webSocket = this.web3Service.getWebSocket();
+    this.webSocket = this.webSocketService.getWebSocket();
     this.webSocket.on('message', async (data) => {
       const dataString: string = data.toString();
       const jsonData = JSON.parse(dataString);
