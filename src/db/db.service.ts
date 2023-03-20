@@ -45,4 +45,14 @@ export class DbService {
 
     return block;
   }
+
+  async isAFork(hash: string): Promise<boolean> {
+    const block = await this.emFork.findOne(Block, { hash });
+
+    if (block) {
+      return block.forked;
+    }
+
+    return false;
+  }
 }

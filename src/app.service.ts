@@ -32,11 +32,14 @@ export class AppService {
           return;
         }
 
+        await this.cacheManager.set(block.hash, 'pending');
+
         const parentHash = block.parentHash;
         const previousBlockNumber = parseInt(block.number, 16) - 1;
         const previousBlock: ethers.Block =
           await this.web3Service.getBlockByNumber(previousBlockNumber);
-        const forked = parentHash !== previousBlock.hash;
+        const parentIsAFork = await this.dbService.isAFork(parentHash);
+        const forked = parentHash !== previousBlock.hash || parentIsAFork;
 
         await this.dbService.createBlock(
           block.hash,
