@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Block } from 'src/entities/block.entity';
+import { Block } from '../entities/block.entity';
 import {
   AbstractSqlConnection,
   AbstractSqlDriver,
