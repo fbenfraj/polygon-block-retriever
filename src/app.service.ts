@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { DbService } from './db/db.service';
 import { Web3Service } from './web3/web3.service';
 import { WebSocket } from 'ws';
@@ -13,6 +13,7 @@ export class AppService {
     private readonly web3Service: Web3Service,
     private readonly dbService: DbService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly logger = new Logger(AppService.name),
   ) {
     this.webSocket = this.web3Service.getWebSocket();
     this.webSocket.on('message', async (data) => {
@@ -24,7 +25,7 @@ export class AppService {
         const cachedBlock = await this.cacheManager.get(block.hash);
 
         if (cachedBlock) {
-          console.log('Block already cached: ', block.hash);
+          this.logger.log('Block already cached: ', block.hash);
           return;
         }
 

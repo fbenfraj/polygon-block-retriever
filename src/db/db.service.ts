@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Block } from 'src/entities/block.entity';
 import {
   AbstractSqlConnection,
@@ -13,7 +13,10 @@ export class DbService {
     AbstractSqlDriver<AbstractSqlConnection, AbstractSqlPlatform>
   >;
 
-  constructor(private readonly em: EntityManager) {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly logger = new Logger(DbService.name),
+  ) {
     this.emFork = this.em.fork();
   }
 
@@ -33,7 +36,7 @@ export class DbService {
 
     await this.emFork.persistAndFlush(block);
 
-    console.log('Added to the database: ', block.hash);
+    this.logger.log('Added to the database: ', block.hash);
 
     return block;
   }
