@@ -12,11 +12,9 @@ export class DbService {
   private readonly emFork: EntityManager<
     AbstractSqlDriver<AbstractSqlConnection, AbstractSqlPlatform>
   >;
+  private readonly logger = new Logger(DbService.name);
 
-  constructor(
-    private readonly em: EntityManager,
-    private readonly logger = new Logger(DbService.name),
-  ) {
+  constructor(private readonly em: EntityManager) {
     this.emFork = this.em.fork();
   }
 
@@ -36,7 +34,7 @@ export class DbService {
 
     await this.emFork.persistAndFlush(block);
 
-    this.logger.log('Added to the database: ', block.hash);
+    this.logger.log(`Added to the database: ${block.hash}`);
 
     return block;
   }

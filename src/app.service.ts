@@ -8,12 +8,12 @@ import { Cache } from 'cache-manager';
 @Injectable()
 export class AppService {
   private readonly webSocket: WebSocket;
+  private readonly logger = new Logger(AppService.name);
 
   constructor(
     private readonly web3Service: Web3Service,
     private readonly dbService: DbService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private readonly logger = new Logger(AppService.name),
   ) {
     this.webSocket = this.web3Service.getWebSocket();
     this.webSocket.on('message', async (data) => {
@@ -25,7 +25,7 @@ export class AppService {
         const cachedBlock = await this.cacheManager.get(block.hash);
 
         if (cachedBlock) {
-          this.logger.log('Block already cached: ', block.hash);
+          this.logger.log(`Block already cached: ${block.hash}`);
           return;
         }
 

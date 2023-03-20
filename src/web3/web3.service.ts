@@ -8,11 +8,9 @@ export class Web3Service {
   private readonly alchemyApiKey: string;
   public readonly webSocket: WebSocket;
   public provider: ethers.JsonRpcProvider;
+  private readonly logger = new Logger(Web3Service.name);
 
-  constructor(
-    private configService: ConfigService,
-    private readonly logger = new Logger(Web3Service.name),
-  ) {
+  constructor(private configService: ConfigService) {
     this.alchemyApiKey = this.configService.get<string>('ALCHEMY_API_KEY');
     this.provider = new ethers.JsonRpcProvider(
       `https://polygon-mainnet.g.alchemy.com/v2/${this.alchemyApiKey}`,
