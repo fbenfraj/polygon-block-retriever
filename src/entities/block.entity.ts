@@ -9,10 +9,13 @@ export class Block {
   hash: string;
 
   @Property()
+  number: string;
+
+  @Property()
   parentHash: string;
 
   @Property()
-  timestamp: string;
+  timestamp: Date;
 
   @Property()
   forked: boolean;

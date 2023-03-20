@@ -8,6 +8,8 @@ import type { RedisClientOptions } from 'redis';
 import { WebsocketModule } from './websocket/websocket.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { WebsocketService } from './websocket/websocket.service';
+import { Web3Module } from './web3/web3.module';
+import { Web3Service } from './web3/web3.service';
 
 @Module({
   imports: [
@@ -33,7 +35,8 @@ import { WebsocketService } from './websocket/websocket.service';
     }),
     DbModule,
     WebsocketModule,
+    Web3Module,
   ],
-  providers: [AppService, DbService, WebsocketService],
+  providers: [AppService, DbService, WebsocketService, Web3Service],
 })
 export class AppModule {}

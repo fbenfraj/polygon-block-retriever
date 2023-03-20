@@ -20,26 +20,29 @@ export class DbService {
 
   async createBlock(
     hash: string,
+    number: string,
     parentHash: string,
-    timestamp: string,
-    forked: boolean = false,
+    timestamp: Date,
+    forked: boolean,
   ) {
+    const unixTimestamp = parseInt(timestamp.toString(), 16);
+    const timestampDate = new Date(unixTimestamp * 1000);
+
     const dto = {
       hash,
+      number,
       parentHash,
-      timestamp,
+      timestamp: timestampDate,
       forked,
     };
     const block = this.emFork.create(Block, dto);
 
     await this.emFork.persistAndFlush(block);
 
-    this.logger.log(`Added to the database: ${block.hash}`);
+    this.logger.log(
+      `Added to the database: ${block.hash} ${forked ? '(FORKED)' : ''}`,
+    );
 
     return block;
-  }
-
-  async findBlockById(id: number) {
-    return await this.emFork.findOne(Block, { id });
   }
 }
