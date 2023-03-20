@@ -38,7 +38,6 @@ import { CacheService } from './cache/cache.service';
     DbModule,
     WebsocketModule,
     Web3Module,
-    CacheModule,
   ],
   providers: [
     AppService,

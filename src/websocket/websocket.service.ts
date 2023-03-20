@@ -9,7 +9,7 @@ export class WebsocketService {
 
   constructor(private configService: ConfigService) {
     const alchemyApiKey = this.configService.get<string>('ALCHEMY_API_KEY');
-    
+
     this.webSocket = new WebSocket(
       `wss://polygon-mainnet.g.alchemy.com/v2/${alchemyApiKey}`,
     )
@@ -24,6 +24,9 @@ export class WebsocketService {
       });
   }
 
+  /**
+   * Subscribes to the 'newHeads' event to receive information about new blocks.
+   */
   private subscribeToNewHeads() {
     const payload = {
       id: 1,
@@ -35,6 +38,10 @@ export class WebsocketService {
     this.webSocket.send(JSON.stringify(payload));
   }
 
+  /**
+   * Returns the active WebSocket instance for the Alchemy API.
+   * @returns The active WebSocket instance.
+   */
   public getWebSocket(): WebSocket {
     return this.webSocket;
   }

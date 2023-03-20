@@ -14,6 +14,11 @@ export class Web3Service {
     );
   }
 
+  /**
+   * Retrieves a block by its number.
+   * @param blockNumber - The number of the block to retrieve.
+   * @returns A Promise resolving to the ethers.Block with the specified block number.
+   */
   async getBlockByNumber(blockNumber: number): Promise<ethers.Block> {
     return await this.provider.getBlock(blockNumber);
   }
