@@ -29,7 +29,17 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --loglevel warning
+    volumes:
+      - cache:/data
+
 # Volumes store your database data and pgAdmin data.
 volumes:
   pgdata:
   pgadmin-data:
+  cache:
