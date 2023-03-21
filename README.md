@@ -41,6 +41,7 @@ I chose WebSockets over Cron jobs for their efficiency and real-time updates, de
 
 ## Prerequisites
 
+- Git
 - NodeJS
 - Docker
 
